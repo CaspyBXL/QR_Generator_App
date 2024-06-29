@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- Replace index.html on line 170 with your own Homepage link or Homepage -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- OWN TITLE --></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .container {
+            text-align: center;
+            background: grey;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            border-radius: 10px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: calc(100% - 20px);
+            border: none;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+        .link-container {
+            display: flex;
+            align-items: center;
+            margin: 7px 0;
+        }
+        .link-container input[type="text"], .link-container input[type="email"] {
+            flex: 1;
+            font-size: 10px;
+        }
+        .link-container label {
+            margin-left: 10px;
+            font-size: 10px;
+        }
+        #qrContainer {
+            display: none;
+        }
+        #qrcode {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+        #downloadBtn, #backBtn {
+            margin: 7px;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="formContainer">
+        <input type="text" id="creatorName" placeholder="Content Creator Name" aria-label="Content Creator Name">
+        <div class="link-container">
+            <input type="email" id="emailAddress" placeholder="E-mail Address" aria-label="E-mail Address">
+            <label><input type="checkbox" id="enableEmail" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="twitchLink" placeholder="Twitch Link" aria-label="Twitch Link">
+            <label><input type="checkbox" id="enableTwitch" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="youtubeLink" placeholder="YouTube Link" aria-label="YouTube Link">
+            <label><input type="checkbox" id="enableYouTube" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="twitterLink" placeholder="X (Twitter) Link" aria-label="Twitter Link">
+            <label><input type="checkbox" id="enableTwitter" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="facebookLink" placeholder="Facebook Gaming Link" aria-label="Facebook Gaming Link">
+            <label><input type="checkbox" id="enableFacebook" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="kickLink" placeholder="Kick Stream Link" aria-label="Kick Stream Link">
+            <label><input type="checkbox" id="enableKick" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="merchLink" placeholder="Merch Shop Link" aria-label="Merch Shop Link">
+            <label><input type="checkbox" id="enableMerch" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="websiteLink" placeholder="Website Link" aria-label="Website Link">
+            <label><input type="checkbox" id="enableWebsite" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="donationsLink" placeholder="Donations Link" aria-label="Donations Link">
+            <label><input type="checkbox" id="enableDonations" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="instagramLink" placeholder="Instagram Link" aria-label="Instagram Link">
+            <label><input type="checkbox" id="enableInstagram" > Include</label>
+        </div>
+        <div class="link-container">
+            <input type="text" id="extraLink" placeholder="Creator Extra Link" aria-label="Creator Extra Link">
+            <label><input type="checkbox" id="enableExtra" > Include</label>
+        </div>
+        
+        <button onclick="generateQRCode()">Generate QR Code</button>
+		<button id="homeButton">Return to Homepage</button>
+    </div>
+
+    <div class="container" id="qrContainer">
+        <div id="qrcode"></div>
+        <button id="downloadBtn" onclick="downloadQRCode()">Download QR Code</button>
+        <button id="backBtn" onclick="goBack()">Go Back</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            var creatorName = document.getElementById("creatorName").value;
+            var twitchLink = document.getElementById("twitchLink").value;
+            var youtubeLink = document.getElementById("youtubeLink").value;
+            var twitterLink = document.getElementById("twitterLink").value;
+            var facebookLink = document.getElementById("facebookLink").value;
+            var kickLink = document.getElementById("kickLink").value;
+            var emailAddress = document.getElementById("emailAddress").value;
+            var merchLink = document.getElementById("merchLink").value;
+            var websiteLink = document.getElementById("websiteLink").value;
+            var donationsLink = document.getElementById("donationsLink").value;
+            var instagramLink = document.getElementById("instagramLink").value;
+            var extraLink = document.getElementById("extraLink").value;
+
+            var enableTwitch = document.getElementById("enableTwitch").checked;
+            var enableYouTube = document.getElementById("enableYouTube").checked;
+            var enableTwitter = document.getElementById("enableTwitter").checked;
+            var enableFacebook = document.getElementById("enableFacebook").checked;
+            var enableKick = document.getElementById("enableKick").checked;
+            var enableEmail = document.getElementById("enableEmail").checked;
+            var enableMerch = document.getElementById("enableMerch").checked;
+            var enableWebsite = document.getElementById("enableWebsite").checked;
+            var enableDonations = document.getElementById("enableDonations").checked;
+            var enableInstagram = document.getElementById("enableInstagram").checked;
+            var enableExtra = document.getElementById("enableExtra").checked;
+
+            var qrData = `Content Creator: ${creatorName}\n`;
+            if (enableTwitch && twitchLink) qrData += `Twitch: ${twitchLink}\n`;
+            if (enableYouTube && youtubeLink) qrData += `YouTube: ${youtubeLink}\n`;
+            if (enableTwitter && twitterLink) qrData += `Twitter: ${twitterLink}\n`;
+            if (enableFacebook && facebookLink) qrData += `Facebook Gaming: ${facebookLink}\n`;
+            if (enableKick && kickLink) qrData += `Kick Stream: ${kickLink}\n`;
+            if (enableEmail && emailAddress) qrData += `E-mail: ${emailAddress}\n`;
+            if (enableMerch && merchLink) qrData += `Merch Shop: ${merchLink}\n`;
+            if (enableWebsite && websiteLink) qrData += `Website: ${websiteLink}\n`;
+            if (enableDonations && donationsLink) qrData += `Donations: ${donationsLink}\n`;
+            if (enableInstagram && instagramLink) qrData += `Instagram: ${instagramLink}\n`;
+            if (enableExtra && extraLink) qrData += `Extra Link: ${extraLink}\n`;
+
+            var qrcodeContainer = document.getElementById("qrcode");
+            qrcodeContainer.innerHTML = "";
+            new QRCode(qrcodeContainer, qrData);
+
+            document.getElementById("formContainer").style.display = "none";
+            document.getElementById("qrContainer").style.display = "block";
+        }
+			document.getElementById("homeButton").addEventListener("click", function() {
+			window.location.href = "homepage.html";
+			});
+
+
+        function goBack() {
+            document.getElementById("formContainer").style.display = "block";
+            document.getElementById("qrContainer").style.display = "none";
+        }
+
+        function downloadQRCode() {
+            var qrCodeCanvas = document.querySelector("#qrcode canvas");
+            var qrCodeDataUrl = qrCodeCanvas.toDataURL("image/png");
+
+            var downloadLink = document.createElement("a");
+            downloadLink.href = qrCodeDataUrl;
+            downloadLink.download = "qrcode.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+		if(navigator.userAgent.toLowerCase().includes('bot') || navigator.userAgent.toLowerCase().includes('ia_archiver')) {
+			window.location.href = 'about:blank';
+		}
+    </script>
+
+</body>
+</html>
